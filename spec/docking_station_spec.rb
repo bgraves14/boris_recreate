@@ -1,5 +1,6 @@
 require 'DockingClass.rb'
 require 'BikeClass.rb'
+require 'byebug'
 
 describe DockingStation do
 
@@ -9,6 +10,7 @@ describe DockingStation do
 	it "create a bike and check if works" do
 		subject.dock Bike.new
 		bike = subject.release_bike
+		puts bike
 		expect(bike).to be_working
 	end
 
@@ -24,8 +26,23 @@ describe DockingStation do
 
 	describe "#dock" do
 		it "raise a flag when station is full" do
-			DockingStation::DEFAULT_CAPACITY.times {subject.dock Bike.new}
+			subject.capacity.times {subject.dock Bike.new}
 			expect{subject.dock Bike.new}.to raise_error "No spaces available"
 		end	
+
+		it "raise a flag if it tries to release a bad bike" do
+			bike = Bike.new
+			bike.report_broken
+			subject.dock bike
+			expect(subject.release_bike).to be_working
+		end
+	end
+
+	describe "#capacity" do
+
+		it "checking the capacity method can take more than 20 bikes" do
+			station = DockingStation.new 50
+			expect(station.capacity).to eq 50
+		end
 	end
 end
