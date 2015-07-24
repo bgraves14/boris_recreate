@@ -34,6 +34,7 @@ describe DockingStation do
 			bike = Bike.new
 			bike.report_broken
 			subject.dock bike
+			subject.dock Bike.new
 			expect(subject.release_bike).to be_working
 		end
 	end

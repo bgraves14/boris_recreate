@@ -1,5 +1,5 @@
 
-require 'BikeClass'
+require_relative 'BikeClass'
 
 class DockingStation 
 DEFAULT_CAPACITY = 20
@@ -12,10 +12,11 @@ attr_accessor :capacity
 	end
 
 	def release_bike
-		good_bikes = []
 		fail "No bikes available" if empty?
 		good_bikes = @bikes.select {|bike| bike.working? == true}
-		good_bikes.pop
+		released = good_bikes.pop
+		@bikes.delete(released)
+		released
 	end
 
 	def dock bike
